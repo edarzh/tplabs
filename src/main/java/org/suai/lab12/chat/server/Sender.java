@@ -32,8 +32,8 @@ public class Sender implements Closeable {
 
 	public void send(String fromUser, String message, String toUser) {
 		try {
-			if (users.containsKey(toUser)) {
-				Socket clientSocket = users.get(toUser);
+			Socket clientSocket = users.get(toUser);
+			if (clientSocket != null) {
 				PrintWriter out = new PrintWriter(new BufferedOutputStream(clientSocket.getOutputStream()), true);
 				out.println(fromUser + ": " + message);
 			}
