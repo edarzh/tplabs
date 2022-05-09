@@ -14,10 +14,11 @@ import java.util.stream.Stream;
 
 public abstract class Receiver implements Runnable, Closeable {
 	protected final AtomicBoolean isActive = new AtomicBoolean(true);
-	protected Path currentWorkDir = Paths.get("").toAbsolutePath();
 	protected final DatagramSocket socket;
 	protected final Service.Console console;
 	protected final Sender sender;
+	protected Path currentWorkDir = Paths.get("")
+			.toAbsolutePath();
 	protected DatagramPacket receivePacket;
 
 	protected Receiver(DatagramSocket socket, Service.Console console, Sender sender) {
@@ -100,7 +101,10 @@ public abstract class Receiver implements Runnable, Closeable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("LS:\n");
 		try (Stream<Path> fileNameStream = Files.list(currentWorkDir)) {
-			fileNameStream.map(Path::getFileName).map(Path::toString).forEach(string -> sb.append(string).append("\n"));
+			fileNameStream.map(Path::getFileName)
+					.map(Path::toString)
+					.forEach(string -> sb.append(string)
+							.append("\n"));
 		}
 		return sb.toString();
 	}

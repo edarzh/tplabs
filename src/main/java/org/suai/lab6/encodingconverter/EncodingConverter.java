@@ -18,15 +18,16 @@ import java.util.Scanner;
 public class EncodingConverter {
 
 	public static void convertEncoding(String inFile, String inFileEncoding, String outFile, String outFileEncoding) {
-		try (Reader reader = new InputStreamReader(new BufferedInputStream(new FileInputStream(inFile)), inFileEncoding);
-			 Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(outFile)), outFileEncoding)) {
+		try (Reader reader = new InputStreamReader(new BufferedInputStream(new FileInputStream(inFile)),
+												   inFileEncoding);
+			 Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(outFile)),
+													outFileEncoding)) {
 
 			int c;
 
 			while ((c = reader.read()) >= 0) {
 				writer.write(c);
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -37,9 +38,9 @@ public class EncodingConverter {
 
 		try (Scanner scanFile = new Scanner(new File(fileName))) {
 			while (scanFile.hasNextLine()) {
-				sb.append(scanFile.nextLine()).append('\n');
+				sb.append(scanFile.nextLine())
+						.append('\n');
 			}
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

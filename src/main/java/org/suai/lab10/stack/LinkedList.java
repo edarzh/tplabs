@@ -67,7 +67,8 @@ public class LinkedList<E> {
 		Node<E> cur = first;
 		sb.append("[");
 		while (cur != null) {
-			sb.append(cur.item.toString()).append(", ");
+			sb.append(cur.item.toString())
+					.append(", ");
 			cur = cur.next;
 		}
 		if (first != null) {

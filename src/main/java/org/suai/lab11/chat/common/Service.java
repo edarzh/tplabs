@@ -10,12 +10,12 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public abstract class Service implements Closeable {
-	protected DatagramSocket socket;
-	protected Receiver receiver;
-	protected Sender sender;
 	protected final Console console = new Console();
 	protected final Destination destination = new Destination();
 	protected final String[] args;
+	protected DatagramSocket socket;
+	protected Receiver receiver;
+	protected Sender sender;
 
 	protected Service(String[] args) {
 		this.args = args;
@@ -38,7 +38,6 @@ public abstract class Service implements Closeable {
 			receiver.stop();
 			socket.close();
 			receiverThread.join();
-
 		} catch (SocketException | UnknownHostException | InterruptedException e) {
 			e.printStackTrace();
 		} finally {
@@ -50,15 +49,15 @@ public abstract class Service implements Closeable {
 
 	private void greet() {
 		console.write("""
-				Commands:
-				@name - set username
-				@quit - quit application
-				@cd - change current working directory of your CC
-				@pwd - print current working directory of your CC
-				@ls - list contents of your CC's current working directory
-				(CC - Chat Companion)
-				Anything else is sent as a message
-				""");
+							  Commands:
+							  @name - set username
+							  @quit - quit application
+							  @cd - change current working directory of your CC
+							  @pwd - print current working directory of your CC
+							  @ls - list contents of your CC's current working directory
+							  (CC - Chat Companion)
+							  Anything else is sent as a message
+							  """);
 	}
 
 	@Override

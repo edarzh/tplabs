@@ -35,7 +35,8 @@ public class FormattedInput {
 				}
 				case 'c' -> {
 					if (scan.hasNext()) {
-						vals.add(scan.next().charAt(0));
+						vals.add(scan.next()
+										 .charAt(0));
 					} else {
 						inputIsCorrect = false;
 					}
@@ -85,7 +86,8 @@ public class FormattedInput {
 				}
 				case 'c' -> {
 					if (scan.hasNext()) {
-						vals.add(scan.next().charAt(0));
+						vals.add(scan.next()
+										 .charAt(0));
 					} else {
 						inputIsCorrect = false;
 					}

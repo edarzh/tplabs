@@ -7,8 +7,8 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 public class UdpServer extends Service {
-	private int listenPort;
 	private static final int DEFAULT_LISTEN_PORT = 9876;
+	private int listenPort;
 
 	public UdpServer(String[] args) {
 		super(args);

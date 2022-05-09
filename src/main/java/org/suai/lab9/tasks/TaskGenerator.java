@@ -4,9 +4,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TaskGenerator implements Runnable {
 	private final TaskQueue tq;
-	private boolean isActive;
 	private final int BOUND;
 	private final int DELTA;
+	private boolean isActive;
 
 	public TaskGenerator(TaskQueue tq, int bound, int delta) {
 		this.tq = tq;

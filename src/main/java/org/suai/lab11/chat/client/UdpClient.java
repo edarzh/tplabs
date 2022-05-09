@@ -9,8 +9,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class UdpClient extends Service {
-	private InetAddress DEFAULT_ADDRESS;
 	private static final int DEFAULT_PORT = 9876;
+	private InetAddress DEFAULT_ADDRESS;
 
 	public UdpClient(String[] args) {
 		super(args);

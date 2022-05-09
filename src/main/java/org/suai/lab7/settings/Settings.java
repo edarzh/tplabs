@@ -18,7 +18,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Settings {
-	private final Map<String,Integer> data;
+	private final Map<String, Integer> data;
 
 	public Settings() {
 		this.data = new HashMap<>();
@@ -26,7 +26,6 @@ public class Settings {
 
 	public void put(String parameter, int value) {
 		this.data.putIfAbsent(parameter, value);
-
 	}
 
 	public int get(String parameter) {
@@ -42,14 +41,15 @@ public class Settings {
 	}
 
 	public void loadFromTextFile(String fileName) {
-		try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-			String content = br.lines().collect(Collectors.joining()).replaceAll("[{}\":,]", "");
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+			String content = br.lines()
+					.collect(Collectors.joining())
+					.replaceAll("[{}\":,]", "");
 
 			Scanner scan = new Scanner(content);
 			while (scan.hasNext()) {
 				this.put(scan.next(), scan.nextInt());
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -58,18 +58,17 @@ public class Settings {
 	public void saveToTextFile(String fileName) {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
 			bw.write(this.toString());
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void loadFromBinaryFile(String fileName) {
-		try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(fileName)), StandardCharsets.UTF_16)) {
+		try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(fileName)),
+										StandardCharsets.UTF_16)) {
 			while (scan.hasNext()) {
 				this.put(scan.next(), scan.nextInt());
 			}
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -77,13 +76,13 @@ public class Settings {
 
 	public void saveToBinaryFile(String fileName) {
 		try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fileName)))) {
-			for (HashMap.Entry<String,Integer> pair : this.data.entrySet()) {
+			for (HashMap.Entry<String, Integer> pair : this.data.entrySet()) {
 				dos.writeChars(pair.getKey());
 				dos.writeChar(' ');
-				dos.writeChars(pair.getValue().toString());
+				dos.writeChars(pair.getValue()
+									   .toString());
 				dos.writeChar(' ');
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -95,10 +94,12 @@ public class Settings {
 
 		sb.append("{\n");
 
-		for (HashMap.Entry<String,Integer> pair : this.data.entrySet()) {
+		for (HashMap.Entry<String, Integer> pair : this.data.entrySet()) {
 			sb.append("\t\"")
-					.append(pair.getKey()).append("\": ")
-					.append(pair.getValue()).append(",\n");
+					.append(pair.getKey())
+					.append("\": ")
+					.append(pair.getValue())
+					.append(",\n");
 		}
 
 		int trailingCommaIndex = sb.lastIndexOf(",");
@@ -123,7 +124,7 @@ public class Settings {
 			return false;
 		}
 
-		return this.data.equals(((Settings)o).data);
+		return this.data.equals(((Settings) o).data);
 	}
 
 	@Override

@@ -32,7 +32,6 @@ public class StoreGraph {
 					this.matrix[i][j] = input.nextInt();
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -41,7 +40,6 @@ public class StoreGraph {
 	public void saveToTextFile(File file) {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 			bw.write(this.toString());
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +52,6 @@ public class StoreGraph {
 					this.matrix[i][j] = dis.readInt();
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,7 +64,6 @@ public class StoreGraph {
 					dos.writeInt(this.matrix[i][j]);
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -79,7 +75,8 @@ public class StoreGraph {
 
 		for (int i = 0; i < this.size; i++) {
 			for (int j = 0; j < this.size; j++) {
-				sb.append(this.matrix[i][j]).append(' ');
+				sb.append(this.matrix[i][j])
+						.append(' ');
 			}
 			sb.append('\n');
 		}

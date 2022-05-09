@@ -9,7 +9,10 @@ import java.net.DatagramSocket;
 public class ServerReceiver extends Receiver {
 	private final Service.Destination destination;
 
-	public ServerReceiver(DatagramSocket socket, Service.Console console, Sender sender, Service.Destination destination) {
+	public ServerReceiver(DatagramSocket socket,
+						  Service.Console console,
+						  Sender sender,
+						  Service.Destination destination) {
 		super(socket, console, sender);
 		this.destination = destination;
 	}

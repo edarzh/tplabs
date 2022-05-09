@@ -40,7 +40,9 @@ public class SortedIntegerList {
 	}
 
 	private int occurs(int element) {
-		return (int) list.stream().filter(n -> n.equals(element)).count();
+		return (int) list.stream()
+				.filter(n -> n.equals(element))
+				.count();
 	}
 
 	public void add(int element) {
@@ -62,7 +64,6 @@ public class SortedIntegerList {
 				return;
 			}
 		}
-
 	}
 
 	public void remove(int element) {
@@ -91,12 +92,18 @@ public class SortedIntegerList {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
 		SortedIntegerList that = (SortedIntegerList) o;
 
-		if (onlyUniqueElements != that.onlyUniqueElements) return false;
+		if (onlyUniqueElements != that.onlyUniqueElements) {
+			return false;
+		}
 		return Objects.equals(list, that.list);
 	}
 

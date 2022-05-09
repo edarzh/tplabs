@@ -31,7 +31,11 @@ public abstract class AbstractGraph implements Graph {
 		for (int i = 0; i < this.size - 1; i++) {
 			for (int j = 1 + i; j < this.size; j++) {
 				if (this.getEdge(i, j) == 1) {
-					sb.append('\t').append(i).append(" -- ").append(j).append(";\n");
+					sb.append('\t')
+							.append(i)
+							.append(" -- ")
+							.append(j)
+							.append(";\n");
 				}
 			}
 		}
@@ -39,7 +43,6 @@ public abstract class AbstractGraph implements Graph {
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 			writer.write(sb.toString());
-
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		} catch (IOException e) {

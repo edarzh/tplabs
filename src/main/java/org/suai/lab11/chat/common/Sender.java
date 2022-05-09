@@ -9,10 +9,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Sender implements Runnable, Closeable {
 	private final AtomicBoolean isActive = new AtomicBoolean(true);
-	private String username = "name";
 	private final DatagramSocket socket;
 	private final Service.Console console;
 	private final Service.Destination destination;
+	private String username = "name";
 
 	public Sender(DatagramSocket socket, Service.Console console, Service.Destination destination) {
 		this.socket = socket;
@@ -26,7 +26,6 @@ public class Sender implements Runnable, Closeable {
 			while (isActive.get()) {
 				parseCommand(console.read());
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 			close();
@@ -52,7 +51,10 @@ public class Sender implements Runnable, Closeable {
 	public synchronized void sendMessage(String message) throws IOException {
 		if (destination.isValid()) {
 			byte[] sendData = (username + ": " + message).getBytes();
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, destination.getAddress(), destination.getPort());
+			DatagramPacket sendPacket = new DatagramPacket(sendData,
+														   sendData.length,
+														   destination.getAddress(),
+														   destination.getPort());
 
 			socket.send(sendPacket);
 		}

@@ -33,7 +33,6 @@ public class AdjMatrixGraph extends AbstractGraph {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		}
-
 	}
 
 	public void connect(int vertex1, int vertex2) {
@@ -56,7 +55,8 @@ public class AdjMatrixGraph extends AbstractGraph {
 
 		for (int i = 0; i < this.size; i++) {
 			for (int j = 0; j < this.size; j++) {
-				sb.append(this.getEdge(i, j)).append(" ");
+				sb.append(this.getEdge(i, j))
+						.append(" ");
 			}
 			sb.append('\n');
 		}

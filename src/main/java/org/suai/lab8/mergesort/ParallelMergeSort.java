@@ -19,7 +19,11 @@ public class ParallelMergeSort {
 		spawnThreads(a, tmp, 0, a.length, 2);
 	}
 
-	private static <T extends Comparable<T>> void spawnThreads(T[] a, T[] tmp, int l, int r, int nodesInLevel) throws InterruptedException {
+	private static <T extends Comparable<T>> void spawnThreads(T[] a,
+															   T[] tmp,
+															   int l,
+															   int r,
+															   int nodesInLevel) throws InterruptedException {
 		if (r - l <= 1) {
 			return;
 		}

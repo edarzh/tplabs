@@ -9,6 +9,15 @@ public abstract class AbstractMatrix implements Matrix {
 	protected final int rows;
 	protected final int columns;
 
+	protected AbstractMatrix(int rows, int columns) {
+		if (rows < 1 || columns < 1) {
+			throw new BadRangeMatrixException();
+		}
+
+		this.rows = rows;
+		this.columns = columns;
+	}
+
 	@Override
 	public abstract void setElement(int row, int column, int value);
 
@@ -18,15 +27,6 @@ public abstract class AbstractMatrix implements Matrix {
 	protected abstract Matrix getInstance(int rows, int columns);
 
 	public abstract int countZeroes();
-
-	protected AbstractMatrix(int rows, int columns) {
-		if (rows < 1 || columns < 1) {
-			throw new BadRangeMatrixException();
-		}
-
-		this.rows = rows;
-		this.columns = columns;
-	}
 
 	@Override
 	public final Matrix sum(Matrix m) {
@@ -104,7 +104,8 @@ public abstract class AbstractMatrix implements Matrix {
 
 		for (int i = 0; i < this.rows; i++) {
 			for (int j = 0; j < this.columns; j++) {
-				sb.append("  ").append(this.getElement(i, j));
+				sb.append("  ")
+						.append(this.getElement(i, j));
 			}
 			sb.append("\n");
 		}

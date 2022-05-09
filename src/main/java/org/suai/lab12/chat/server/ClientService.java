@@ -17,9 +17,9 @@ public class ClientService implements Runnable, Closeable {
 	private final Socket clientSocket;
 	private final AtomicBoolean isActive = new AtomicBoolean(false);
 	private final Sender sender;
-	private String name;
 	private final Map<String, Socket> users;
 	private final AlarmExecutor alarmExecutor;
+	private String name;
 
 	public ClientService(Socket clientSocket,
 						 Sender sender,

@@ -10,9 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeManager {
 	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
-
-	private static Clock clock = Clock.systemDefaultZone();
 	private static final ZoneId zoneId = ZoneId.systemDefault();
+	private static Clock clock = Clock.systemDefaultZone();
 	private static TimeUnit timeUnit = TimeUnit.SECONDS;
 
 	static LocalDateTime getCurrentTime() {
@@ -51,7 +50,7 @@ public class TimeManager {
 
 	public static void useFixedClockAt(LocalDateTime time) {
 		clock = Clock.fixed(time.atZone(zoneId)
-				.toInstant(), zoneId);
+									.toInstant(), zoneId);
 	}
 
 	public static void useSystemDefaultZoneClock() {

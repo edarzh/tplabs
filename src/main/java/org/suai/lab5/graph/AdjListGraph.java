@@ -28,10 +28,10 @@ public class AdjListGraph extends AbstractGraph {
 				Scanner scanLine = new Scanner(scanFile.nextLine());
 
 				while (scanLine.hasNextInt()) {
-					this.adjList.get(i).add(scanLine.nextInt());
+					this.adjList.get(i)
+							.add(scanLine.nextInt());
 				}
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		}
@@ -40,21 +40,28 @@ public class AdjListGraph extends AbstractGraph {
 	}
 
 	public void connect(int vertex1, int vertex2) {
-		if (!this.adjList.get(vertex1).contains(vertex2)) {
-			this.adjList.get(vertex1).add(vertex2);
-			this.adjList.get(vertex2).add(vertex1);
+		if (!this.adjList.get(vertex1)
+				.contains(vertex2)) {
+			this.adjList.get(vertex1)
+					.add(vertex2);
+			this.adjList.get(vertex2)
+					.add(vertex1);
 		}
 	}
 
 	public void disconnect(int vertex1, int vertex2) {
-		if (this.adjList.get(vertex1).contains(vertex2)) {
-			this.adjList.get(vertex1).remove((Object) vertex2);
-			this.adjList.get(vertex2).remove((Object) vertex1);
+		if (this.adjList.get(vertex1)
+				.contains(vertex2)) {
+			this.adjList.get(vertex1)
+					.remove((Object) vertex2);
+			this.adjList.get(vertex2)
+					.remove((Object) vertex1);
 		}
 	}
 
 	public int getEdge(int vertex1, int vertex2) {
-		if (this.adjList.get(vertex1).contains(vertex2)) {
+		if (this.adjList.get(vertex1)
+				.contains(vertex2)) {
 			return 1;
 		}
 		return 0;
@@ -66,7 +73,8 @@ public class AdjListGraph extends AbstractGraph {
 
 		for (var i : this.adjList) {
 			for (var j : i) {
-				sb.append(j).append(' ');
+				sb.append(j)
+						.append(' ');
 			}
 			sb.append('\n');
 		}

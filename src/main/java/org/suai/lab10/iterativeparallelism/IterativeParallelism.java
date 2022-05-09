@@ -13,7 +13,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class IterativeParallelism {
-	private record Range(int from, int to) {
+	private static <T> boolean allMatch(List<? extends T> list, Predicate<? super T> predicate) {
+		return list.stream()
+				.allMatch(predicate);
+	}
+
+	private static <T> boolean anyMatch(List<? extends T> list, Predicate<? super T> predicate) {
+		return list.stream()
+				.anyMatch(predicate);
 	}
 
 	private <T> List<Range> split(int threads, List<? extends T> list) {
@@ -32,11 +39,15 @@ public class IterativeParallelism {
 		return parts;
 	}
 
-	public <T> T minimum(int threads, List<? extends T> list, Comparator<? super T> comparator) throws InterruptedException {
+	public <T> T minimum(int threads,
+						 List<? extends T> list,
+						 Comparator<? super T> comparator) throws InterruptedException {
 		return find(threads, list, comparator, Collections::min);
 	}
 
-	public <T> T maximum(int threads, List<? extends T> list, Comparator<? super T> comparator) throws InterruptedException {
+	public <T> T maximum(int threads,
+						 List<? extends T> list,
+						 Comparator<? super T> comparator) throws InterruptedException {
 		return find(threads, list, comparator, Collections::max);
 	}
 
@@ -67,11 +78,15 @@ public class IterativeParallelism {
 		return function.apply(results, comparator);
 	}
 
-	public <T> boolean all(int threads, List<? extends T> list, Predicate<? super T> predicate) throws InterruptedException {
+	public <T> boolean all(int threads,
+						   List<? extends T> list,
+						   Predicate<? super T> predicate) throws InterruptedException {
 		return match(threads, list, predicate, IterativeParallelism::allMatch, true);
 	}
 
-	public <T> boolean any(int threads, List<? extends T> list, Predicate<? super T> predicate) throws InterruptedException {
+	public <T> boolean any(int threads,
+						   List<? extends T> list,
+						   Predicate<? super T> predicate) throws InterruptedException {
 		return match(threads, list, predicate, IterativeParallelism::anyMatch, false);
 	}
 
@@ -103,22 +118,18 @@ public class IterativeParallelism {
 		return checkResults(results, all);
 	}
 
-	private static <T> boolean allMatch(List<? extends T> list, Predicate<? super T> predicate) {
-		return list.stream().allMatch(predicate);
-	}
-
-	private static <T> boolean anyMatch(List<? extends T> list, Predicate<? super T> predicate) {
-		return list.stream().anyMatch(predicate);
-	}
-
 	private <T> boolean checkResults(List<T> results, boolean all) {
 		if (all) {
-			return results.stream().allMatch(e -> (boolean) e);
+			return results.stream()
+					.allMatch(e -> (boolean) e);
 		}
-		return results.stream().anyMatch(e -> (boolean) e);
+		return results.stream()
+				.anyMatch(e -> (boolean) e);
 	}
 
-	public <T> List<T> filter(int threads, List<? extends T> list, Predicate<? super T> predicate) throws InterruptedException {
+	public <T> List<T> filter(int threads,
+							  List<? extends T> list,
+							  Predicate<? super T> predicate) throws InterruptedException {
 		List<Range> parts = split(threads, list);
 		List<T> results = new ArrayList<>();
 		List<Task<List<T>>> taskList = new ArrayList<>();
@@ -128,7 +139,10 @@ public class IterativeParallelism {
 			taskList.add(new Task<>() {
 				@Override
 				public void run() {
-					result = list.subList(range.from, range.to).stream().filter(predicate).collect(Collectors.toList());
+					result = list.subList(range.from, range.to)
+							.stream()
+							.filter(predicate)
+							.collect(Collectors.toList());
 				}
 			});
 		}
@@ -144,7 +158,9 @@ public class IterativeParallelism {
 		return results;
 	}
 
-	public <T, U> List<U> map(int threads, List<? extends T> list, Function<? super T, ? extends U> function) throws InterruptedException {
+	public <T, U> List<U> map(int threads,
+							  List<? extends T> list,
+							  Function<? super T, ? extends U> function) throws InterruptedException {
 		List<Range> parts = split(threads, list);
 		List<U> results = new ArrayList<>();
 		List<Task<List<U>>> taskList = new ArrayList<>();
@@ -154,7 +170,10 @@ public class IterativeParallelism {
 			taskList.add(new Task<>() {
 				@Override
 				public void run() {
-					result = list.subList(range.from, range.to).stream().map(function).collect(Collectors.toList());
+					result = list.subList(range.from, range.to)
+							.stream()
+							.map(function)
+							.collect(Collectors.toList());
 				}
 			});
 		}
@@ -182,7 +201,8 @@ public class IterativeParallelism {
 				public void run() {
 					StringBuilder sb = new StringBuilder();
 					for (Object elem : list.subList(range.from, range.to)) {
-						sb.append(elem.toString()).append(" ");
+						sb.append(elem.toString())
+								.append(" ");
 					}
 					result = sb.toString();
 				}
@@ -199,8 +219,15 @@ public class IterativeParallelism {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for (String s : results) {
-			sb.append(s).append(" ");
+			sb.append(s)
+					.append(" ");
 		}
-		return sb.toString().replace("  ", " ").trim().replaceAll(" ", ", ") + "]";
+		return sb.toString()
+				.replace("  ", " ")
+				.trim()
+				.replaceAll(" ", ", ") + "]";
+	}
+
+	private record Range(int from, int to) {
 	}
 }

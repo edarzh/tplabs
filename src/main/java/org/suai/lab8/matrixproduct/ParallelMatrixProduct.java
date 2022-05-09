@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParallelMatrixProduct {
-	List<Thread> threads;
 	private final int numOfThreads;
+	List<Thread> threads;
 
 	public ParallelMatrixProduct(int numOfThreads) {
 		this.numOfThreads = numOfThreads;

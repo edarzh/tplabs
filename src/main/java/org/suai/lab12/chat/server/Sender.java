@@ -17,7 +17,8 @@ public class Sender implements Closeable {
 	public void send(String fromUser, String message) {
 		try {
 			for (Map.Entry<String, Socket> user : users.entrySet()) {
-				if (user.getKey().equals(fromUser)) {
+				if (user.getKey()
+						.equals(fromUser)) {
 					continue;
 				}
 				Socket clientSocket = user.getValue();
