@@ -25,6 +25,7 @@ public class TcpClient {
 	}
 
 	public void start() {
+		greet();
 		try (Socket clientSocket = new Socket(InetAddress.getByName(address), port);
 			 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			 PrintWriter out = new PrintWriter(new BufferedOutputStream(clientSocket.getOutputStream()), true);
@@ -47,5 +48,16 @@ public class TcpClient {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void greet() {
+		System.out.println("""
+				COMMANDS
+				@name <username> - set your username
+				@senduser <username> <message> - send message to specific user
+				@quit - quit application
+					
+				Anything else is sent as a message to everyone connected to the server
+				""");
 	}
 }
