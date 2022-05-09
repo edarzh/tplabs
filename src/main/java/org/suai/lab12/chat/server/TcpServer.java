@@ -35,8 +35,9 @@ public class TcpServer implements Closeable {
 				clientThread.start();
 			}
 		} catch (IOException e) {
-			close();
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 	}
 
