@@ -54,7 +54,8 @@ public class TcpClient {
 		System.out.println("""
 				COMMANDS
 				@name <username> - set your username
-				@senduser <username> <message> - send message to specific user
+				@senduser <username> <message> - send message to specified user
+				@alarm <time> - set alarm for specified time
 				@quit - quit application
 					
 				Anything else is sent as a message to everyone connected to the server
