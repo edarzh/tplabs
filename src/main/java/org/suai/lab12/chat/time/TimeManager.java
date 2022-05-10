@@ -36,6 +36,15 @@ public class TimeManager {
 		return timeUnit;
 	}
 
+	public static void useFixedClockAt(LocalDateTime time) {
+		clock = Clock.fixed(time.atZone(zoneId)
+									.toInstant(), zoneId);
+	}
+
+	public static void useSystemDefaultZoneClock() {
+		clock = Clock.systemDefaultZone();
+	}
+
 	// for tests
 	public static void setTimeUnit(TimeUnit timeUnit) {
 		TimeManager.timeUnit = timeUnit;
@@ -46,14 +55,5 @@ public class TimeManager {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern(TimeManager.DATE_TIME_FORMAT);
 		LocalDateTime parsed = LocalDateTime.parse(time, format);
 		useFixedClockAt(parsed);
-	}
-
-	public static void useFixedClockAt(LocalDateTime time) {
-		clock = Clock.fixed(time.atZone(zoneId)
-									.toInstant(), zoneId);
-	}
-
-	public static void useSystemDefaultZoneClock() {
-		clock = Clock.systemDefaultZone();
 	}
 }

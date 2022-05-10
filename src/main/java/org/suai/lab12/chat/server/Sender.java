@@ -7,12 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Map;
 
-public class Sender implements Closeable {
-	private final Map<String, Socket> users;
-
-	public Sender(Map<String, Socket> users) {
-		this.users = users;
-	}
+public record Sender(Map<String, Socket> users) implements Closeable {
 
 	public void send(String fromUser, String message) {
 		try {
@@ -31,17 +26,19 @@ public class Sender implements Closeable {
 		}
 	}
 
-	public void send(String fromUser, String message, String toUser) {
+	public boolean send(String fromUser, String message, String toUser) {
 		try {
 			Socket clientSocket = users.get(toUser);
 			if (clientSocket != null) {
 				PrintWriter out = new PrintWriter(new BufferedOutputStream(clientSocket.getOutputStream()), true);
 				out.println(fromUser + ": " + message);
+				return true;
 			}
 		} catch (IOException e) {
 			close();
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	@Override

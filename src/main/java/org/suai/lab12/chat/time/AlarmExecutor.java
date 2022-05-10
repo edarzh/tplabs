@@ -3,9 +3,10 @@ package org.suai.lab12.chat.time;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class AlarmExecutor {
@@ -20,35 +21,32 @@ public class AlarmExecutor {
 	}
 
 	public void addUser(String name) {
-		alarms.put(name, new PriorityQueue<>());
+		alarms.put(name, new PriorityBlockingQueue<>());
 	}
 
-	public void addAlarm(String name, LocalDateTime dateTime, Runnable task, Runnable taskIfMissed) {
-		Queue<Alarm> userAlarmQueue = alarms.get(name);
-		if (userAlarmQueue != null) {
-			Alarm alarm = new Alarm(name, dateTime, task, taskIfMissed);
+	public void addAlarm(String name, LocalDateTime dateTime, Callable<Boolean> task, Runnable taskIfMissed) {
+		Queue<Alarm> alarmQueue = alarms.get(name);
+		if (alarmQueue != null) {
+			Alarm alarm = new Alarm(dateTime, task, taskIfMissed, alarmQueue);
 
-			userAlarmQueue.add(alarm);
+			alarmQueue.add(alarm);
 			scheduler.schedule(alarm, TimeManager.until(dateTime), TimeManager.getTimeUnit());
 		}
 	}
 
 	public void runMissedIfAny(String name) {
-		// TODO: implement
+		Queue<Alarm> alarmQueue = alarms.get(name);
+		if (alarmQueue != null) {
+			for (Alarm alarm : alarmQueue) {
+				if (TimeManager.until(alarm.getDateTime()) < 0) {
+					alarm.runMissed();
+				}
+			}
+		}
 	}
 
-	static class Alarm implements Runnable {
-		private final String name;
-		private final LocalDateTime dateTime;
-		private final Runnable task;
-		private final Runnable taskIfMissed;
-
-		Alarm(String name, LocalDateTime dateTime, Runnable task, Runnable taskIfMissed) {
-			this.name = name;
-			this.dateTime = dateTime;
-			this.task = task;
-			this.taskIfMissed = taskIfMissed;
-		}
+	private record Alarm(LocalDateTime dateTime, Callable<Boolean> task, Runnable taskIfMissed, Queue<Alarm> alarmQueue)
+			implements Runnable, Comparable<Alarm> {
 
 		LocalDateTime getDateTime() {
 			return dateTime;
@@ -56,11 +54,23 @@ public class AlarmExecutor {
 
 		@Override
 		public void run() {
-			task.run();
+			try {
+				if (task.call()) {
+					alarmQueue.remove(this);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		void runMissed() {
-			// TODO: implement
+			taskIfMissed.run();
+			alarmQueue.remove(this);
+		}
+
+		@Override
+		public int compareTo(Alarm o) {
+			return dateTime.compareTo(o.dateTime);
 		}
 	}
 }

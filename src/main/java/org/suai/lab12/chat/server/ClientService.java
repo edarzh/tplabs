@@ -58,8 +58,8 @@ public class ClientService implements Runnable, Closeable {
 			switch (firstToken) {
 				case "@name" -> {
 					if (scanInput.hasNext()) {
-						String newUsername = scanInput.next();
-						changeUsername(newUsername);
+						String newName = scanInput.next();
+						changeUsername(newName);
 					}
 				}
 				case "@senduser" -> {
@@ -91,13 +91,14 @@ public class ClientService implements Runnable, Closeable {
 		alarmExecutor.addAlarm(name,
 							   dateTime,
 							   () -> sender.send("ALARM", AlarmExecutor.ALARM_MESSAGE, name),
-							   () -> sender.send("ALARM", AlarmExecutor.MISSED_ALARM_MESSAGE + time, name));
+							   () -> sender.send("ALARM", AlarmExecutor.MISSED_ALARM_MESSAGE + dateTime, name));
 	}
 
-	private void changeUsername(String newUsername) {
+	private void changeUsername(String newName) {
 		users.remove(name);
-		users.put(newUsername, clientSocket);
-		name = newUsername;
+		users.put(newName, clientSocket);
+		name = newName;
+		alarmExecutor.runMissedIfAny(name);
 	}
 
 	public void stop() {
