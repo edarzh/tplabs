@@ -37,9 +37,12 @@ public class AlarmExecutor {
 	public void runMissedIfAny(String name) {
 		Queue<Alarm> alarmQueue = alarms.get(name);
 		if (alarmQueue != null) {
-			for (Alarm alarm : alarmQueue) {
+			Alarm alarm;
+			while ((alarm = alarmQueue.peek()) != null) {
 				if (TimeManager.until(alarm.getDateTime()) < 0) {
 					alarm.runMissed();
+				} else {
+					break;
 				}
 			}
 		}
